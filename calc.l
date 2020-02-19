@@ -1,45 +1,60 @@
 %{
-	#include <stdio.h>
-	#include "calc.tab.h"
+    #include <stdlib.h>
+    #include <stdio.h>
+    #include "calc.tab.h"
+    void yyerror(char *);
 %}
 
 
-digit   ([0-9])
+digit	([0-9])
+var     ([a-z]([a-z0-9]*))
 
 
 %%
-"println"   {return(TOK_PRINTLN);}
 
-{digit}+    {   sscanf(yytext, "%d", &yylval);
-                    return TOK_NUM;
-                }
+{var}+      {
+                yylval = *yytext - 'a';
+                return TOK_CHAR;
+            }
 
-";"	        {	return(TOK_SEMICOLON);	}
-
-"+"	        {	return(TOK_ADD);	}
-"-"	        {	return(TOK_SUB);	}
-"*"	        {	return(TOK_MUL);	}
-"/"	        {	return(TOK_DIV);	}
-"+="        {   return(TOK_SELFADD); }
-"-="        {   return(TOK_SELFSUB); }
-"*="        {   return(TOK_SELFMUL); }
-"/="        {   return(TOK_SELFDIV); }
+{digit}+    {
+                sscanf(yytext, "%d", &yylval);
+                return TOK_NUM;
+            }
 
 
-"\n" 	    {                       }
-"\t"        {                       }
+"+"     {	return(TOK_ADD);	}
 
-.	        {   printf("Invalid character '%c', ignored\n",yytext[0]);}
+"-"     {   return(TOK_SUB);	}
+
+"*"	    {	return(TOK_MUL);	}
+
+"/"	    {	return(TOK_DIV);	}
+
+"+="    {   return(TOK_SELFADD);}
+
+"-="    {   return(TOK_SELFSUB);}
+
+"*="    {   return(TOK_SELFMUL);}
+
+"/="    {   return(TOK_SELFDIV);}
+
+
+
+[()=]   { return *yytext;       }
+
+[" "]   ;
+
+[ \n]   {  return *yytext; }
+
+[ \t]   ;
+
+
+.       {   printf("Invalid character '%c', ignored\n", yytext[0]); }
 
 %%
 
-
-int yywrap()
+int yywrap(void)
 {
-return 1;
+    return 1;
 }
-    
-    
-    
-    
-
