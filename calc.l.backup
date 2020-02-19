@@ -1,0 +1,62 @@
+%{
+	#include <stdio.h>
+	#include "calc.tab.h"
+    int ind = 0;
+%}
+
+
+digit   ([0-9]*)
+
+
+chartr  ([a-z][a-z0-9]*)
+
+
+%%
+
+"print"     {return(TOK_PRINTLN);}
+
+{digit}+    {   
+                sscanf(yytext, "%d", &yylval);
+                return TOK_NUM;
+            }
+
+{chartr}+   {
+                sscanf(yytext, "%s", yylval);
+                ind++;
+                return TOK_CHAR;
+            }
+        
+";"	        {	return(TOK_SEMICOLON);	}
+"("         {   return(TOK_BRACK_S);}
+")"         {   return(TOK_BRACK_E);}
+"+"	        {	return(TOK_ADD);	}
+"-"	        {	return(TOK_SUB);	}
+"*"	        {	return(TOK_MUL);	}
+"/"	        {	return(TOK_DIV);	}
+"+="        {   return(TOK_SELFADD); }
+"-="        {   return(TOK_SELFSUB); }
+"*="        {   return(TOK_SELFMUL); }
+"/="        {   return(TOK_SELFDIV); }
+
+"="         {   return(TOK_ASGN);}
+
+
+"main()"    {   printf("Start of the file 'main()' ignored\n");}
+"\n" 	    {   return 0;}
+"\t"        {                       }
+
+.	        {   printf("Invalid character '%c', ignored\n",yytext[0]);}
+
+
+%%
+
+
+int yywrap()
+{
+return 1;
+}
+    
+    
+    
+    
+
