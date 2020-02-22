@@ -36,37 +36,37 @@ stmts   :
 
 stmt    :    E
 
-        |    TOK_CHAR TOK_ASSIGN E             { sym[$1] = $3; }
+        |    TOK_CHAR TOK_ASSIGN E      { sym[$1] = $3; }
 
-        |   TOK_CHAR TOK_SELFADD E     { $$ = sym[$1] = (sym[$1] + $3);}
+        |   TOK_CHAR TOK_SELFADD E      { $$ = sym[$1] = (sym[$1] + $3);}
 
-        |   TOK_CHAR TOK_SELFSUB E     { $$ = sym[$1] = (sym[$1] - $3);}
+        |   TOK_CHAR TOK_SELFSUB E      { $$ = sym[$1] = (sym[$1] - $3);}
 
-        |   TOK_CHAR TOK_SELFMUL E     { $$ = sym[$1] = (sym[$1] * $3);}
+        |   TOK_CHAR TOK_SELFMUL E      { $$ = sym[$1] = (sym[$1] * $3);}
 
-        |   TOK_CHAR TOK_SELFDIV E     { $$ = sym[$1] = (sym[$1] / $3);}
+        |   TOK_CHAR TOK_SELFDIV E      { $$ = sym[$1] = (sym[$1] / $3);}
 
-        |   TOK_PRINTLN E     { fprintf(stdout,"%d\n", $2);}
+        |   TOK_PRINTLN E               { fprintf(stdout,"%d\n", $2);}
 
 ;
 
-E       :   TOK_CHAR            { $$ = sym[$1]; }
+E       :   TOK_CHAR                    { $$ = sym[$1]; }
+
+        |   E TOK_ADD E                 { $$ = $1 + $3; }
+
+        |   E TOK_SUB E                 { $$ = $1 - $3; }
+
+        |   E TOK_MUL E                 { $$ = $1 * $3; }
+
+        |   E TOK_DIV E                 { $$ = $1 / $3; }
+
+        |   TOK_NUM                     {$$ = $1;}
 
         |   TOK_BRACK_S TOK_SUB Integer TOK_BRACK_E {$$=-$3;}
 
-        |   E TOK_ADD E         { $$ = $1 + $3; }
-
-        |   E TOK_SUB E         { $$ = $1 - $3; }
-
-        |   E TOK_MUL E         { $$ = $1 * $3; }
-
-        |   E TOK_DIV E         { $$ = $1 / $3; }
-
-        |   TOK_NUM             {$$ = $1;}
-
 ;
 
-Integer :   TOK_NUM             {$$ = $1;}
+Integer :   TOK_NUM                     {$$ = $1;}
 
 ;
 

@@ -15,15 +15,15 @@ var   ([a-z]([a-z0-9]*))
 %%
 
 
-"main()"    { return(TOK_MAIN);}
+"main()"    {   return(TOK_MAIN);}
 
-"{"         { return(TOK_CURLY_BRACK_S);  }
+"{"         {   return(TOK_CURLY_BRACK_S);  }
 
-"}"         { return(TOK_CURLY_BRACK_E);  }
+"}"         {   return(TOK_CURLY_BRACK_E);  }
 
-"="         { return(TOK_ASSIGN);  }
+"="         {   return(TOK_ASSIGN);  }
 
-"print"     {return(TOK_PRINTLN);}
+"print"     {   return(TOK_PRINTLN);}
 
 "; "         {   printf("Lexical Error -\n");}
 
@@ -55,9 +55,9 @@ var   ([a-z]([a-z0-9]*))
 
 "/="        {   return(TOK_SELFDIV);}
 
-"("         { return(TOK_BRACK_S);  }
+"("         {   return(TOK_BRACK_S);  }
 
-")"         { return(TOK_BRACK_E);  }
+")"         {   return(TOK_BRACK_E);  }
 
 [ \n]       {  lc++;return *yytext; }
 
