@@ -4,7 +4,7 @@
     #include "calc.tab.h"
     void yyerror(char *);
 
-    int lc=1;
+    int lc=0;
 %}
 
 
