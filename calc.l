@@ -14,16 +14,22 @@ var   ([a-z]([a-z0-9]*))
 
 %%
 
+
+"main()"    { return(TOK_MAIN);}
+
+"{"         { return(TOK_CURLY_BRACK_S);  }
+
+"}"         { return(TOK_CURLY_BRACK_E);  }
+
+"="         { return(TOK_ASSIGN);  }
+
 "print"     {return(TOK_PRINTLN);}
 
-"; }"   {   printf(" Lexical error: -\n"); }
+"; "         {   printf("Lexical Error -\n");}
 
-
-{var}+  {
-                /*yylval = *yytext - 'a';*/
-                sscanf(yytext, "%c", &yylval);
-                                return TOK_CHAR;
-
+{var}+      {
+                yylval = *yytext - 'a';
+                return TOK_CHAR;
             }
 
 {digit}+    {
@@ -31,48 +37,39 @@ var   ([a-z]([a-z0-9]*))
                 return TOK_NUM;
             }
 
-"+"     {   return(TOK_ADD);    }
+";"         {   return(TOK_SEMICOLON);  }
 
-"-"     {   return(TOK_SUB);    }
+"+"         {   return(TOK_ADD);    }
 
-"*"     {   return(TOK_MUL);    }
+"-"         {   return(TOK_SUB);    }
 
-"/"     {   return(TOK_DIV);    }
+"*"         {   return(TOK_MUL);    }
 
-"+="    {   return(TOK_SELFADD);}
+"/"         {   return(TOK_DIV);    }
 
-"-="    {   return(TOK_SELFSUB);}
+"+="        {   return(TOK_SELFADD);}
 
-"*="    {   return(TOK_SELFMUL);}
+"-="        {   return(TOK_SELFSUB);}
 
-"/="    {   return(TOK_SELFDIV);}
+"*="        {   return(TOK_SELFMUL);}
 
-[" "]   ;
-
-"{"         { return(TOK_CURLY_BRACK_S);  }
-
-"}"         { return(TOK_CURLY_BRACK_E);  }
+"/="        {   return(TOK_SELFDIV);}
 
 "("         { return(TOK_BRACK_S);  }
 
 ")"         { return(TOK_BRACK_E);  }
 
-"="         { return(TOK_ASSIGN);  }
+[ \n]       {  lc++;return *yytext; }
 
-"main()"    { return(TOK_MAIN);}
+[ \t]       ;
 
-[ \n]   {   printf("in here slash \n"); lc++;  }
+[" "]       ;
 
+.           {   printf("Lexical error: -'%c'\n", yytext[0]); }
 
-[\t]   { ;}
-
-
-
-";"         {   printf("in here\n"); return(TOK_SEMICOLON);  }
-
-.       {   printf(" Lexical sdkhgfs error: \n"); }
 
 %%
+
 
 int yywrap(void)
 {
