@@ -4,7 +4,7 @@
     #include "calc.tab.h"
     void yyerror(char *);
 
-    int lc=0;
+    int lc=1;
 %}
 
 
@@ -21,11 +21,9 @@ var   ([a-z]([a-z0-9]*))
 
 "}"         {   return(TOK_CURLY_BRACK_E);  }
 
-"="         {   return(TOK_ASSIGN);  }
-
 "print"     {   return(TOK_PRINTLN);}
 
-"; }"       {   printf("Lexical Error -\n");}
+"; }"       {   lc--;printf("Lexical error: -\n");}
 
 {var}+      {
                 yylval = *yytext - 'a';
@@ -59,11 +57,13 @@ var   ([a-z]([a-z0-9]*))
 
 ")"         {   return(TOK_BRACK_E);  }
 
-[ \n]       {  lc++;return *yytext; }
+"="         {   return(TOK_ASSIGN);  }
 
-[ \t]       ;
+[ \n]       {   lc++; return *yytext; }
 
 [" "]       ;
+
+[ \t]       ;
 
 .           {   printf("Lexical error: -'%c'\n", yytext[0]); }
 
